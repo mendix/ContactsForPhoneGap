@@ -9,4 +9,4 @@ For more information on contributing to this repository visit [Contributing to a
 
 ## Typical usage scenario
 
-When you want to add contacts from and to a Mendix mobile project.
+When you want to use contacts from your mobile phone in a Mendix mobile project.
