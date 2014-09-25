@@ -5,5 +5,6 @@ test/.project
 *.launch
 *.tmp
 *.lock
-test/zip Progress Bar.bat
+*.bak
 .idea/
+*.mws
