@@ -53,7 +53,7 @@
                 if (this.getOrCreate === 'retrieve') {
                     navigator.contacts.pickContact(dojo.hitch(this, this._selectContactSuccess), dojo.hitch(this, this._contactFailure));
                 } else
-                    this.createContact();
+                    this._createContact();
             }));
         },
 
@@ -70,7 +70,7 @@
             contact.phoneNumbers = phoneNumbers;
 
             // save to device
-            contact.save(dojo.hitch(this, this._createContactSuccess), dojo.hitch(this, this.contactFailure));
+            contact.save(dojo.hitch(this, this._createContactSuccess), dojo.hitch(this, this._contactFailure));
         },
 
         _createContactSuccess: function () {
