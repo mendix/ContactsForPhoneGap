@@ -65,9 +65,9 @@
             contact.nickname = name;    // specify both to support all devices
 
             // populate some fields
-            var phoneNumbers = [];
-            phoneNumbers[0] = new ContactField('work', this._obj.get(this.phonenumberAttr), true);
+            var phoneNumbers = [new ContactField('work', this._obj.get(this.phonenumberAttr), true)];
             contact.phoneNumbers = phoneNumbers;
+            contact.emails = [new ContactField('work', this._obj.get(this.emailAttr), true)];
 
             // save to device
             contact.save(dojo.hitch(this, this._createContactSuccess), dojo.hitch(this, this._contactFailure));
@@ -78,7 +78,7 @@
         },
 
         _selectContactSuccess: function (contact) {
-            if (contact.photos[0]) {
+            if (contact.photos && contact.photos[0]) {
                 this._imgNode.src = contact.photos[0].value;
                 mxui.dom.show(this._imgNode);
             } else {
@@ -86,7 +86,7 @@
             }
 
             var email = contact.emails && contact.emails[0].value;
-            var name = contact.displayName;
+            var name = contact.displayName || contact.nickname;
             var phonenr = contact.phoneNumbers && contact.phoneNumbers[0].value;
 
             this._obj.set(this.displaynameAttr, name);
