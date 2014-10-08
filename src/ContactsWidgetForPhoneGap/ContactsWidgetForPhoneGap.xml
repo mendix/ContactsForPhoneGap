@@ -28,6 +28,30 @@
 				<attributeType name="String"/>
 			</attributeTypes>
 		</property>
+		<property key="firstnameAttr" type="attribute" required="false">
+			<caption>First name attribute</caption>
+			<category>Data source</category>
+			<description></description>
+			<attributeTypes>
+				<attributeType name="String"/>
+			</attributeTypes>
+		</property>
+		<property key="middlenameAttr" type="attribute" required="false">
+			<caption>Middle name attribute</caption>
+			<category>Data source</category>
+			<description></description>
+			<attributeTypes>
+				<attributeType name="String"/>
+			</attributeTypes>
+		</property>
+		<property key="lastnameAttr" type="attribute" required="false">
+			<caption>Last name attribute</caption>
+			<category>Data source</category>
+			<description></description>
+			<attributeTypes>
+				<attributeType name="String"/>
+			</attributeTypes>
+		</property>
 		<property key="phonenumberAttr" type="attribute" required="true">
 			<caption>Phonenumber attribute</caption>
 			<category>Data source</category>

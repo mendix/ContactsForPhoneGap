@@ -63,6 +63,10 @@
             var name = this._obj.get(this.displaynameAttr);
             contact.displayName = name;
             contact.nickname = name;    // specify both to support all devices
+            contact.name = {};
+            contact.name.givenName = this._obj.get(this.firstnameAttr);
+            contact.name.middleName = this._obj.get(this.middlenameAttr);
+            contact.name.familyName = this._obj.get(this.lastnameAttr);
 
             // populate some fields
             var phoneNumbers = [new ContactField('work', this._obj.get(this.phonenumberAttr), true)];
@@ -86,12 +90,26 @@
             }
 
             var email = contact.emails && contact.emails[0].value;
-            var name = contact.displayName || contact.nickname;
+            var name = contact.displayName || contact.nickname || contact.name.formatted;
             var phonenr = contact.phoneNumbers && contact.phoneNumbers[0].value;
 
-            this._obj.set(this.displaynameAttr, name);
-            this._obj.set(this.emailAttr, email);
-            this._obj.set(this.phonenumberAttr, phonenr);
+            if (name)
+                this._obj.set(this.displaynameAttr, name);
+            
+            if (contact.name.givenName && this.firstnameAttr)
+                this._obj.set(this.firstnameAttr, contact.name.givenName);
+
+            if (contact.name.familyName && this.lastnameAttr)
+                this._obj.set(this.lastnameAttr, contact.name.familyName);
+
+            if (contact.name.middleName && this.middlenameAttr)
+                this._obj.set(this.middlenameAttr, contact.name.middleName);
+
+            if (email)
+                this._obj.set(this.emailAttr, email);
+
+            if (phonenr)
+                this._obj.set(this.phonenumberAttr, phonenr);
         },
 
         _contactFailure: function (error) {
