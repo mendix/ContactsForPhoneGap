@@ -95,7 +95,7 @@
 
             if (name)
                 this._obj.set(this.displaynameAttr, name);
-            
+
             if (contact.name.givenName && this.firstnameAttr)
                 this._obj.set(this.firstnameAttr, contact.name.givenName);
 
@@ -154,6 +154,9 @@
         _createChildnodes: function () {
             // Placeholder container
             this._button = mxui.dom.div({'class': 'wx-ContactsWidgetForPhoneGap-button btn btn-primary'}, this.buttonLabel);
+            if (this.buttonClass)
+                dojo.addClass(this._button, this.buttonClass);
+            
             this._imgNode = mxui.dom.img({'width': '64px', 'height': '64px'});
             mxui.dom.hide(this._imgNode);
 
