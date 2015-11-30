@@ -2,9 +2,9 @@ define([
     "mxui/widget/_WidgetBase", "mxui/dom", "dojo/dom-class", "dojo/dom-construct", "dojo/_base/lang",
     "dojo/_base/declare"
 ], function(_WidgetBase, mxuiDom, dojoClass, dojoConstruct, dojoLang, declare) {
-    'use strict';
+    "use strict";
 
-    return declare('ContactsWidgetForPhoneGap.widget.ContactsWidgetForPhoneGap', _WidgetBase, {
+    return declare("ContactsWidgetForPhoneGap.widget.ContactsWidgetForPhoneGap", _WidgetBase, {
 
         // internal variables.
         _button: null,
@@ -37,7 +37,7 @@ define([
         // Setup
         _setupWidget: function () {
             // Set class for domNode
-            dojoClass.add(this.domNode, 'wx-ContactsWidgetForPhoneGap-container');
+            dojoClass.add(this.domNode, "wx-ContactsWidgetForPhoneGap-container");
 
             // Empty domnode of this and appand new input
             dojoConstruct.empty(this.domNode);
@@ -48,10 +48,10 @@ define([
             // Attach only one event to dropdown list.
             this.connect(this._button, "click", dojoLang.hitch(this, function(evt) {
                 if (!navigator.contacts) {
-                    mx.ui.error('Unable to detect contact PhoneGap functionality.');
+                    mx.ui.error("Unable to detect contact PhoneGap functionality.");
                     return;
                 }
-                if (this.getOrCreate === 'retrieve') {
+                if (this.getOrCreate === "retrieve") {
                     navigator.contacts.pickContact(dojoLang.hitch(this, this._selectContactSuccess), dojoLang.hitch(this, this._contactFailure));
                 } else
                     this._createContact();
@@ -70,9 +70,9 @@ define([
             contact.name.familyName = this._obj.get(this.lastnameAttr);
 
             // populate some fields
-            var phoneNumbers = [new ContactField('work', this._obj.get(this.phonenumberAttr), true)];
+            var phoneNumbers = [new ContactField("work", this._obj.get(this.phonenumberAttr), true)];
             contact.phoneNumbers = phoneNumbers;
-            contact.emails = [new ContactField('work', this._obj.get(this.emailAttr), true)];
+            contact.emails = [new ContactField("work", this._obj.get(this.emailAttr), true)];
 
             // save to device
             contact.save(dojoLang.hitch(this, this._createContactSuccess), dojoLang.hitch(this, this._contactFailure));
@@ -116,25 +116,25 @@ define([
         _contactFailure: function (error) {
             switch (error.code) {
                 case 0 :
-                    window.alert('Found an unknown error while handling the request.');
+                    window.alert("Found an unknown error while handling the request.");
                     break;
                 case 1 :
-                    window.alert('Invalid argument found.');
+                    window.alert("Invalid argument found.");
                     break;
                 case 2 :
-                    window.alert('Operation timed out.');
+                    window.alert("Operation timed out.");
                     break;
                 case 3 :
-                    window.alert('Pending operation error.');
+                    window.alert("Pending operation error.");
                     break;
                 case 4 :
-                    window.alert('IO error encountered.');
+                    window.alert("IO error encountered.");
                     break;
                 case 5 :
-                    window.alert('Operation not supported.');
+                    window.alert("Operation not supported.");
                     break;
                 case 20 :
-                    window.alert('Permission denied.');
+                    window.alert("Permission denied.");
                     break;
                 default : break;
             }
@@ -146,7 +146,7 @@ define([
                     error: function () {
                     },
                     actionname: mf,
-                    applyto: 'selection',
+                    applyto: "selection",
                     guids: [this._obj.getGuid()]
                 });
             }
@@ -154,11 +154,11 @@ define([
 
         _createChildnodes: function () {
             // Placeholder container
-            this._button = mxuiDom.div({'class': 'wx-ContactsWidgetForPhoneGap-button btn btn-primary'}, this.buttonLabel);
+            this._button = mxuiDom.div({"class": "wx-ContactsWidgetForPhoneGap-button btn btn-primary"}, this.buttonLabel);
             if (this.buttonClass)
                 dojoClass.add(this._button, this.buttonClass);
             
-            this._imgNode = mxuiDom.img({'width': '64px', 'height': '64px'});
+            this._imgNode = mxuiDom.img({"width": "64px", "height": "64px"});
             mxuiDom.hide(this._imgNode);
 
             // Add to wxnode
