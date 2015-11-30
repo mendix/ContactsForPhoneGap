@@ -13,7 +13,7 @@ define([
         _imgNode: null,
 
         // Externally executed mendix function to create widget.
-        startup: function () {
+        startup: function() {
             if (this._hasStarted)
                 return;
 
@@ -29,13 +29,13 @@ define([
             this._setupEvents();
         },
 
-        update: function (obj, callback) {
+        update: function(obj, callback) {
             this._obj = obj;
             callback && callback();
         },
 
         // Setup
-        _setupWidget: function () {
+        _setupWidget: function() {
             // Set class for domNode
             dojoClass.add(this.domNode, "wx-ContactsWidgetForPhoneGap-container");
 
@@ -44,7 +44,7 @@ define([
         },
 
         // Internal event setup.
-        _setupEvents: function () {
+        _setupEvents: function() {
             // Attach only one event to dropdown list.
             this.connect(this._button, "click", dojoLang.hitch(this, function(evt) {
                 if (!navigator.contacts) {
@@ -58,7 +58,7 @@ define([
             }));
         },
 
-        _createContact: function () {
+        _createContact: function() {
             // create a new contact object
             var contact = navigator.contacts.create();
             var name = this._obj.get(this.displaynameAttr);
@@ -70,19 +70,19 @@ define([
             contact.name.familyName = this._obj.get(this.lastnameAttr);
 
             // populate some fields
-            var phoneNumbers = [new ContactField("work", this._obj.get(this.phonenumberAttr), true)];
+            var phoneNumbers = [ new ContactField("work", this._obj.get(this.phonenumberAttr), true) ];
             contact.phoneNumbers = phoneNumbers;
-            contact.emails = [new ContactField("work", this._obj.get(this.emailAttr), true)];
+            contact.emails = [ new ContactField("work", this._obj.get(this.emailAttr), true) ];
 
             // save to device
             contact.save(dojoLang.hitch(this, this._createContactSuccess), dojoLang.hitch(this, this._contactFailure));
         },
 
-        _createContactSuccess: function () {
+        _createContactSuccess: function() {
             this._executeMicroflow(this.contactSuccessMf);
         },
 
-        _selectContactSuccess: function (contact) {
+        _selectContactSuccess: function(contact) {
             if (contact.photos && contact.photos[0]) {
                 this._imgNode.src = contact.photos[0].value;
                 mxuiDom.show(this._imgNode);
@@ -113,7 +113,7 @@ define([
                 this._obj.set(this.phonenumberAttr, phonenr);
         },
 
-        _contactFailure: function (error) {
+        _contactFailure: function(error) {
             switch (error.code) {
                 case 0 :
                     window.alert("Found an unknown error while handling the request.");
@@ -140,25 +140,24 @@ define([
             }
         },
 
-        _executeMicroflow: function (mf) {
+        _executeMicroflow: function(mf) {
             if (mf && this._obj) {
                 mx.processor.xasAction({
-                    error: function () {
-                    },
+                    error: function() {},
                     actionname: mf,
                     applyto: "selection",
-                    guids: [this._obj.getGuid()]
+                    guids: [ this._obj.getGuid() ]
                 });
             }
         },
 
-        _createChildnodes: function () {
+        _createChildnodes: function() {
             // Placeholder container
-            this._button = mxuiDom.div({"class": "wx-ContactsWidgetForPhoneGap-button btn btn-primary"}, this.buttonLabel);
+            this._button = mxuiDom.div({ "class": "wx-ContactsWidgetForPhoneGap-button btn btn-primary" }, this.buttonLabel);
             if (this.buttonClass)
                 dojoClass.add(this._button, this.buttonClass);
-            
-            this._imgNode = mxuiDom.img({"width": "64px", "height": "64px"});
+
+            this._imgNode = mxuiDom.img({ "width": "64px", "height": "64px" });
             mxuiDom.hide(this._imgNode);
 
             // Add to wxnode
@@ -166,7 +165,6 @@ define([
             this.domNode.appendChild(this._imgNode);
         }
     });
-
 });
 
 // Compatibility with older mendix versions.
