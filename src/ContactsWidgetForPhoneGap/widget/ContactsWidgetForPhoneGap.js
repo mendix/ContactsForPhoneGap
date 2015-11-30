@@ -1,9 +1,10 @@
-(function(){
+define([
+    "mxui/widget/_WidgetBase", "mxui/dom", "dojo/dom-class", "dojo/dom-construct", "dojo/_base/lang",
+    "dojo/_base/declare"
+], function(_WidgetBase, mxuiDom, dojoClass, dojoConstruct, dojoLang, declare) {
     'use strict';
 
-    dojo.provide('ContactsWidgetForPhoneGap.widget.ContactsWidgetForPhoneGap');
-    
-    dojo.declare('ContactsWidgetForPhoneGap.widget.ContactsWidgetForPhoneGap', mxui.widget._WidgetBase, {
+    return declare('ContactsWidgetForPhoneGap.widget.ContactsWidgetForPhoneGap', _WidgetBase, {
 
         // internal variables.
         _button: null,
@@ -36,22 +37,22 @@
         // Setup
         _setupWidget: function () {
             // Set class for domNode
-            dojo.addClass(this.domNode, 'wx-ContactsWidgetForPhoneGap-container');
+            dojoClass.add(this.domNode, 'wx-ContactsWidgetForPhoneGap-container');
 
             // Empty domnode of this and appand new input
-            dojo.empty(this.domNode);
+            dojoConstruct.empty(this.domNode);
         },
 
         // Internal event setup.
         _setupEvents: function () {
             // Attach only one event to dropdown list.
-            dojo.connect(this._button, "onclick", dojo.hitch(this, function (evt) {
+            this.connect(this._button, "click", dojoLang.hitch(this, function(evt) {
                 if (!navigator.contacts) {
                     mx.ui.error('Unable to detect contact PhoneGap functionality.');
                     return;
                 }
                 if (this.getOrCreate === 'retrieve') {
-                    navigator.contacts.pickContact(dojo.hitch(this, this._selectContactSuccess), dojo.hitch(this, this._contactFailure));
+                    navigator.contacts.pickContact(dojoLang.hitch(this, this._selectContactSuccess), dojoLang.hitch(this, this._contactFailure));
                 } else
                     this._createContact();
             }));
@@ -74,7 +75,7 @@
             contact.emails = [new ContactField('work', this._obj.get(this.emailAttr), true)];
 
             // save to device
-            contact.save(dojo.hitch(this, this._createContactSuccess), dojo.hitch(this, this._contactFailure));
+            contact.save(dojoLang.hitch(this, this._createContactSuccess), dojoLang.hitch(this, this._contactFailure));
         },
 
         _createContactSuccess: function () {
@@ -84,9 +85,9 @@
         _selectContactSuccess: function (contact) {
             if (contact.photos && contact.photos[0]) {
                 this._imgNode.src = contact.photos[0].value;
-                mxui.dom.show(this._imgNode);
+                mxuiDom.show(this._imgNode);
             } else {
-                mxui.dom.hide(this._imgNode);
+                mxuiDom.hide(this._imgNode);
             }
 
             var email = contact.emails && contact.emails[0].value;
@@ -153,12 +154,12 @@
 
         _createChildnodes: function () {
             // Placeholder container
-            this._button = mxui.dom.div({'class': 'wx-ContactsWidgetForPhoneGap-button btn btn-primary'}, this.buttonLabel);
+            this._button = mxuiDom.div({'class': 'wx-ContactsWidgetForPhoneGap-button btn btn-primary'}, this.buttonLabel);
             if (this.buttonClass)
-                dojo.addClass(this._button, this.buttonClass);
+                dojoClass.add(this._button, this.buttonClass);
             
-            this._imgNode = mxui.dom.img({'width': '64px', 'height': '64px'});
-            mxui.dom.hide(this._imgNode);
+            this._imgNode = mxuiDom.img({'width': '64px', 'height': '64px'});
+            mxuiDom.hide(this._imgNode);
 
             // Add to wxnode
             this.domNode.appendChild(this._button);
@@ -166,4 +167,7 @@
         }
     });
 
-}());
+});
+
+// Compatibility with older mendix versions.
+require([ "ContactsWidgetForPhoneGap/widget/ContactsWidgetForPhoneGap" ], function() {});
