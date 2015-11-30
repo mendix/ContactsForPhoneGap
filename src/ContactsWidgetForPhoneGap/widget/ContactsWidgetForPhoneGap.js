@@ -89,9 +89,9 @@ define([
         _selectContactSuccess: function(contact) {
             if (contact.photos && contact.photos[0]) {
                 this._imgNode.src = contact.photos[0].value;
-                mxuiDom.show(this._imgNode);
+                this._imgNode.style.display = "";
             } else {
-                mxuiDom.hide(this._imgNode);
+                this._imgNode.style.display = "none";
             }
 
             var email = contact.emails && contact.emails[0].value;
@@ -145,10 +145,12 @@ define([
 
         _executeMicroflow: function(mf) {
             if (mf && this._obj) {
-                mx.processor.xasAction({
-                    actionname: mf,
-                    applyto: "selection",
-                    guids: [ this._obj.getGuid() ],
+                mx.data.action({
+                    params: {
+                        actionname: mf,
+                        applyto: "selection",
+                        guids: [ this._obj.getGuid() ]
+                    },
                     error: function() {}
                 });
             }
@@ -156,12 +158,19 @@ define([
 
         _createChildnodes: function() {
             // Placeholder container
-            this._button = mxuiDom.div({ "class": "wx-ContactsWidgetForPhoneGap-button btn btn-primary" }, this.buttonLabel);
+            this._button = mxuiDom.create("div", {
+                "class": "wx-ContactsWidgetForPhoneGap-button btn btn-primary"
+            }, this.buttonLabel);
+
             if (this.buttonClass)
                 dojoClass.add(this._button, this.buttonClass);
 
-            this._imgNode = mxuiDom.img({ "width": "64px", "height": "64px" });
-            mxuiDom.hide(this._imgNode);
+            this._imgNode = mxuiDom.create("img", {
+                "width": "64px", "height": "64px",
+                "style": {
+                    display: "none"
+                }
+            });
 
             // Add to wxnode
             this.domNode.appendChild(this._button);
