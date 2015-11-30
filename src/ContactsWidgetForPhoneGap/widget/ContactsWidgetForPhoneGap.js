@@ -31,7 +31,8 @@ define([
 
         update: function(obj, callback) {
             this._obj = obj;
-            callback && callback();
+
+            if (callback) callback();
         },
 
         // Setup
@@ -64,15 +65,19 @@ define([
             var name = this._obj.get(this.displaynameAttr);
             contact.displayName = name;
             contact.nickname = name;    // specify both to support all devices
-            contact.name = {};
-            contact.name.givenName = this._obj.get(this.firstnameAttr);
-            contact.name.middleName = this._obj.get(this.middlenameAttr);
-            contact.name.familyName = this._obj.get(this.lastnameAttr);
+            contact.name = {
+                givenName: this._obj.get(this.firstnameAttr),
+                middleName: this._obj.get(this.middlenameAttr),
+                familyName: this._obj.get(this.lastnameAttr)
+            };
 
             // populate some fields
-            var phoneNumbers = [ new ContactField("work", this._obj.get(this.phonenumberAttr), true) ];
-            contact.phoneNumbers = phoneNumbers;
-            contact.emails = [ new ContactField("work", this._obj.get(this.emailAttr), true) ];
+            contact.phoneNumbers = [
+                new ContactField("work", this._obj.get(this.phonenumberAttr), true)
+            ];
+            contact.emails = [
+                new ContactField("work", this._obj.get(this.emailAttr), true)
+            ];
 
             // save to device
             contact.save(dojoLang.hitch(this, this._createContactSuccess), dojoLang.hitch(this, this._contactFailure));
@@ -136,17 +141,16 @@ define([
                 case 20 :
                     window.alert("Permission denied.");
                     break;
-                default : break;
             }
         },
 
         _executeMicroflow: function(mf) {
             if (mf && this._obj) {
                 mx.processor.xasAction({
-                    error: function() {},
                     actionname: mf,
                     applyto: "selection",
-                    guids: [ this._obj.getGuid() ]
+                    guids: [ this._obj.getGuid() ],
+                    error: function() {}
                 });
             }
         },
