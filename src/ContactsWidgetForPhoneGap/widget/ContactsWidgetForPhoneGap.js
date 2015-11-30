@@ -1,7 +1,6 @@
 define([
-    "mxui/widget/_WidgetBase", "mxui/dom", "dojo/dom-class", "dojo/dom-construct", "dojo/_base/lang",
-    "dojo/_base/declare"
-], function(_WidgetBase, mxuiDom, dojoClass, dojoConstruct, dojoLang, declare) {
+    "mxui/widget/_WidgetBase", "mxui/dom", "dojo/dom-class", "dojo/dom-construct", "dojo/_base/declare"
+], function(_WidgetBase, mxuiDom, dojoClass, dojoConstruct, declare) {
     "use strict";
 
     return declare("ContactsWidgetForPhoneGap.widget.ContactsWidgetForPhoneGap", _WidgetBase, {
@@ -47,16 +46,16 @@ define([
         // Internal event setup.
         _setupEvents: function() {
             // Attach only one event to dropdown list.
-            this.connect(this._button, "click", dojoLang.hitch(this, function(evt) {
+            this.connect(this._button, "click", function(evt) {
                 if (!navigator.contacts) {
                     mx.ui.error("Unable to detect contact PhoneGap functionality.");
                     return;
                 }
                 if (this.getOrCreate === "retrieve") {
-                    navigator.contacts.pickContact(dojoLang.hitch(this, this._selectContactSuccess), dojoLang.hitch(this, this._contactFailure));
+                    navigator.contacts.pickContact(this._selectContactSuccess.bind(this), this._contactFailure.bind(this));
                 } else
                     this._createContact();
-            }));
+            }.bind(this));
         },
 
         _createContact: function() {
@@ -80,7 +79,7 @@ define([
             ];
 
             // save to device
-            contact.save(dojoLang.hitch(this, this._createContactSuccess), dojoLang.hitch(this, this._contactFailure));
+            contact.save(this._createContactSuccess.bind(this), this._contactFailure.bind(this));
         },
 
         _createContactSuccess: function() {
